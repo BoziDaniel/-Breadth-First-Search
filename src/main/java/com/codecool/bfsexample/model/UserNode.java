@@ -31,7 +31,9 @@ public class UserNode {
         return fullName;
     }
 
-    public Set<UserNode> getFriends() {return friends;}
+    public Set<UserNode> getFriends() {
+        return friends;
+    }
 
     public void addFriend(UserNode friend) {
         friends.add(friend);
@@ -53,35 +55,41 @@ public class UserNode {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     public Integer getDistanceBetweenUsers(String fullname, List<UserNode> users) {
-        Integer counter = 0;
+        Integer distance = 0;
+        if (this.fullName.equals(fullname)) {
+            return distance;
+        }
+
         Queue<UserNode> usersToCheck = new LinkedList<>();
         Set<UserNode> checkedUsers = new HashSet<>();
-        usersToCheck.add(this);
-        if (this.fullName.equals(fullname)) {
-            return counter;
-        }
+        usersToCheck.addAll(this.getFriends());
+        Set<UserNode> nextUsersToCheck = new HashSet<>();
         while (!usersToCheck.isEmpty()) {
-            counter++;
-            UserNode actualUser;
-            System.out.println("usersToCheck: " + usersToCheck.toString());
-            actualUser = usersToCheck.poll();
-            System.out.println("actualUser: " + actualUser );
-            if (actualUser.fullName.equals(fullname)) {
-                return counter;
-            }
-            Set<UserNode> friends = actualUser.getFriends();
-            for (UserNode friend : friends) {
-                if (!usersToCheck.contains(friend) || !checkedUsers.contains(friend)) {
-                    usersToCheck.add(friend);
+            distance++;
+            for (UserNode user : usersToCheck) {
+                checkedUsers.add(user);
+                if (user.fullName.equals(fullname)) {
+                    return distance;
                 }
+               Set <UserNode> friends = user.getFriends();
+                for (UserNode friend : friends) {
+                    if(!nextUsersToCheck.contains(friend)|| !usersToCheck.contains(friend) || checkedUsers.contains(friend)){
+                        nextUsersToCheck.add(friend);
+                    }
+                }
+
             }
-            checkedUsers.add(actualUser);
-            System.out.println("checkedusers:" + checkedUsers.toString());
+            usersToCheck.clear();
+            usersToCheck.addAll(nextUsersToCheck);
+            nextUsersToCheck.clear();
+
         }
         return -1;
 
     }
+
     public String toString() {
         return firstName + "_" + lastName + " (" + id + ")";
     }

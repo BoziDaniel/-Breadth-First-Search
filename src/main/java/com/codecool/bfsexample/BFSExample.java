@@ -18,14 +18,18 @@ public class BFSExample {
 
     public static void main(String[] args) {
         List<UserNode> users = populateDB();
+        UserNode user1 = users.get(0);
+        UserNode user2 = findUser("Naomi_Prescott",users);
+        getDistanceBetweenTwoUsers(user1, user2, users);
+    }
 
-        UserNode emeryJohnoson = users.get(0);
-        UserNode anotherUser = findUser("Hadley_Kibo", users);
+    public static void getDistanceBetweenTwoUsers(UserNode user1, UserNode user2, List<UserNode> allUsers ) {
+
         Set<UserNode> anotherUsers = new HashSet<>();
-        anotherUsers.add(anotherUser);
-        GraphPlotter graphPlotter = new GraphPlotter(users);
-        graphPlotter.highlightNodes(anotherUsers, emeryJohnoson);
-        int distance = emeryJohnoson.getDistanceBetweenUsers(anotherUser.getFullName(), users);
+        anotherUsers.add(user2);
+        GraphPlotter graphPlotter = new GraphPlotter(allUsers);
+        graphPlotter.highlightNodes(anotherUsers, user1);
+        int distance = user1.getDistanceBetweenUsers(user2.getFullName(), allUsers);
         System.out.println( "distance: " + distance);
     }
 
