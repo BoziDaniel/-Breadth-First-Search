@@ -20,7 +20,14 @@ public class BFSExample {
         List<UserNode> users = populateDB();
         UserNode user1 = users.get(0);
         UserNode user2 = findUser("Naomi_Prescott",users);
-        getDistanceBetweenTwoUsers(user1, user2, users);
+
+        //getDistanceBetweenTwoUsers(user1, user2, users);
+
+        Set<UserNode> friendsOfFriends = user1.getFriendsOfFriendsAtAGivenDistance(1);
+
+
+        GraphPlotter graphPlotter = new GraphPlotter(users);
+        graphPlotter.highlightNodes(friendsOfFriends, user1);
     }
 
     public static void getDistanceBetweenTwoUsers(UserNode user1, UserNode user2, List<UserNode> allUsers ) {

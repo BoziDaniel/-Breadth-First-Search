@@ -90,6 +90,32 @@ public class UserNode {
 
     }
 
+    public Set<UserNode> getFriendsOfFriendsAtAGivenDistance(int distance) {
+        Set<UserNode> friends = this.getFriends();
+        Set<UserNode> nextLvlFriends = new HashSet<>();
+        System.out.println(this.getFriends().toString());
+        Set<UserNode> visited = new HashSet<>();
+        System.out.println("my friends: " + this.getFriends().toString());
+        for (int i = 1; i < distance+1 ; i++) {
+            for (UserNode friend : friends) {
+                for (UserNode friendOfFriend : friend.getFriends()) {
+                    if (!visited.contains(friendOfFriend)) {
+                        nextLvlFriends.add(friendOfFriend);
+                    }
+                }
+                visited.add(friend);
+            }
+            System.out.println("lvl " + i + " friends of friends : ");
+            System.out.println(nextLvlFriends);
+            friends.clear();
+            friends.addAll(nextLvlFriends);
+            nextLvlFriends.clear();
+        }
+        return friends;
+
+    }
+
+
     public String toString() {
         return firstName + "_" + lastName + " (" + id + ")";
     }
